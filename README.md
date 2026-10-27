@@ -16,7 +16,6 @@
 - **Nothing required.** None of the target mods are needed. If one isn't installed, its module simply stays off.
 - **Your choice.** Every module can be turned off in **Mods → Patchwork → Config** (or `config/patchwork.toml`).
 
-<p align="center"><img src=".github/assets/modules.png" alt="The Patchwork config screen, one toggle per module" width="760"></p>
 
 ## What it fixes
 
