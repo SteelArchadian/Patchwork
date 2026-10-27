@@ -1,0 +1,53 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.chill.patchwork.mixin",
+  "plugin": "dev.chill.patchwork.mixin.PatchworkMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "biolith.RTreeSearchMixin",
+    "terrablender.NamespacedRuleMixin",
+    "terrainslabs.SlabFeatureMixin",
+    "voicelesssurvival.MobGoalInjectorAccessor",
+    "voicelesssurvival.InjectedGoalsAccessor",
+    "watut.PlayerStatusManagerServerMixin",
+    "supplementaries.BlockUtilMixin",
+    "campfireresting.SyncMessageMixin",
+    "campfireresting.PlayerVariablesMixin",
+    "nomadictents.AdvancementMixin",
+    "nomadictents.TentDoorBlockMixin",
+    "nomadictents.TentDoorBlockEntityMixin",
+    "midnightlib.MidnightConfigMixin",
+    "loadmychunks.LoadedChunkProvidersMixin",
+    "villagerapi.VillagerPackLoaderMixin",
+    "villagerapi.VillagerPackMixin"
+  ],
+  "client": [
+    "seamlessloadingscreen.MinecraftMixin",
+    "signtext.SignRendererMixin",
+    "rendertypenames.CompositeRenderTypeMixin",
+    "irisnametags.EntityRendererMixin",
+    "irisnametags.PlayerRendererMixin",
+    "soundwatchdog.SoundEngineMixin",
+    "soundwatchdog.SoundEngineExecutorAccessor",
+    "essential.CosmeticsLayerMixin",
+    "subtleeffects.ClientLevelBiomeMixin",
+    "subtleeffects.FireflyManagerMixin",
+    "subtleeffects.BiomeEffectsManagerMixin",
+    "subtleeffects.ModBlockTickersMixin",
+    "subtleeffects.GeyserTickerMixin",
+    "acceleratedrendering.ARCoreFeatureMixin",
+    "acceleratedrendering.LevelRendererScopeMixin",
+    "watut.RenderHelperMixin",
+    "watut.PlayerStatusManagerClientMixin",
+    "watut.ScreenParticleRendererMixin",
+    "watut.ByteBufferProcessorMixin",
+    "iris.GlImageMixin",
+    "irisshadercache.TransformPatcherMixin",
+    "skinlayers3d.CustomLayerFeatureRendererMixin",
+    "skinlayers3d.ModelPartMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

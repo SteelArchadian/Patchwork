@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "Chill"
+description = '''Per-mod fixes for the Foundation pack, one module per mod, each with its own toggle (Mods → Patchwork → Config). A module only runs if the mod it fixes is installed at a version it was written for, so updates never get overwritten by stale code.
+
+Modules: Biolith biome-lookup allocations; TerraBlender surface-rule allocations; Terrain Slabs slab scan; Voiceless Survival mob memory leak; Essential cosmetics removal; Eating Animation built in (no Groovy ModLoader needed).'''
+
+[[mixins]]
+config = "patchwork.mixins.json"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
