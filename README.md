@@ -65,4 +65,4 @@ The jar is written to `build/libs/`. Each module lives in `src/main/java/dev/chi
 
 Third-party parts keep their own notices, listed in [NOTICE.md](NOTICE.md): small LGPL-derived pieces of Biolith and TerraBlender, and MIT-licensed parts of Terrain Slabs and Eating Animation. Patchwork doesn't include or redistribute any of the mods it patches.
 
-Licensed under the GNU Lesser General Public License v3.0 only: see [LICENSE](LICENSE) (with the GPL text it builds on in [COPYING](COPYING)). Made for the Foundation modpack, with help from Claude.
+Licensed under the GNU Lesser General Public License v3.0 only: see [LICENSE](LICENSE) (with the GPL text it builds on in [COPYING](COPYING)). Made for the Foundation modpack, with AI assistance.
