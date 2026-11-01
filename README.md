@@ -45,7 +45,7 @@
 | Minecraft: render types | 1.21.1 | Render type names built once (~7.5% more FPS near banners with shaders) |
 | Seamless Loading Screen | 2.2.1+1.21 | No crash when leaving a world another mod opened |
 
-The performance modules don't change results. Each has a check mode (`-Dpatchbox.verify.<key>=true`) that runs the original code side by side and logs any difference. All were checked on a ~290-mod pack with zero differences.
+The performance modules don't change results. Each has a check mode (`-Dpatchbox.verify.<key>=true`) that runs the original code side by side and logs any difference. All were checked with zero differences.
 
 ## Bugs and ideas
 
@@ -65,4 +65,4 @@ The jar is written to `build/libs/`. Each module lives in `src/main/java/dev/chi
 
 Third-party parts keep their own notices, listed in [NOTICE.md](NOTICE.md): small LGPL-derived pieces of Biolith and TerraBlender, and MIT-licensed parts of Terrain Slabs and Eating Animation. Patchwork doesn't include or redistribute any of the mods it patches.
 
-Licensed under the GNU Lesser General Public License v3.0 only: see [LICENSE](LICENSE) (with the GPL text it builds on in [COPYING](COPYING)). Made for the Foundation modpack, with AI assistance.
+Licensed under the GNU Lesser General Public License v3.0 only: see [LICENSE](LICENSE) (with the GPL text it builds on in [COPYING](COPYING)). Made with AI assistance.
