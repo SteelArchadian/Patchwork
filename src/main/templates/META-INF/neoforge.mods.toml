@@ -30,3 +30,15 @@ type = "required"
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
+# Load before C2ME's OpenCL addon so the c2meoclfallback module's setting is in place when it reads its config.
+[[dependencies.${mod_id}]]
+modId = "c2me_opts_accel_opencl"
+type = "optional"
+versionRange = "*"
+ordering = "BEFORE"
+side = "BOTH"
+
+# Lithium's alloc.nbt is replaced by Patchwork's lithiumnbt module (same map type, sized for small tags).
+["lithium:options"]
+"mixin.alloc.nbt" = false

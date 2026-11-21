@@ -2,6 +2,7 @@ package dev.chill.patchwork.soundwatchdog;
 
 import dev.chill.patchwork.Patchwork;
 import dev.chill.patchwork.mixin.soundwatchdog.SoundEngineExecutorAccessor;
+import com.mojang.blaze3d.audio.Channel;
 import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.client.sounds.SoundEngineExecutor;
 
@@ -62,12 +63,16 @@ public final class SoundWatchdog {
         }
     }
 
-    /** Skips this sound; a channel granted later is handed straight back so it doesn't leak. */
+    /**
+     * Skips this sound. A channel granted later is stopped, so vanilla's own channel tick releases it and takes it out
+     * of ChannelAccess's list. Releasing it here instead left a released handle in that list: every later tick threw
+     * (channel is null) and the next sound reload crashed the game ("Tried to release unknown channel").
+     */
     private static Object drop(CompletableFuture<?> future, SoundEngineExecutor executor) {
         dropped++;
         future.thenAccept(handle -> {
             if (handle instanceof ChannelAccess.ChannelHandle channel) {
-                executor.execute(channel::release);
+                channel.execute(Channel::stop);
             }
         });
         return null;

@@ -46,6 +46,9 @@ public final class SubtleCache {
     }
 
     /** -Dpatchwork.verify.subtleeffects=true: every cached answer is also computed fresh and mismatches are logged. */
+    /** Subtle Effects 1.15.2 tests for full solid blocks and fluids itself before its firefly lookups (issues #274/#275), so our early-out is skipped there. */
+    public static final boolean UPSTREAM_FIREFLY_SKIP = !java.util.Set.of("1.15.0", "1.15.1").contains(String.valueOf(dev.chill.patchwork.Module.modVersion("subtle_effects")));
+
     public static final boolean VERIFY = Boolean.getBoolean("patchwork.verify.subtleeffects");
     private static final org.slf4j.Logger LOG = com.mojang.logging.LogUtils.getLogger();
     private static long checks, mismatches;
@@ -103,18 +106,24 @@ public final class SubtleCache {
         return value;
     }
 
-    /** Plain config fields are cheap; only conditional ones (which re-check every condition on each call) are memoised. */
+    /**
+     * Plain config fields are cheap; only conditional ones (which re-check every condition on each call) are memoised.
+     * Plain fields call get() directly: Operation.call(Object...) builds an argument array on every call, and this runs
+     * thousands of times a tick.
+     */
     public static Object field(Object field, Operation<Object> original) {
-        return field instanceof me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition<?> ? condition(field, original) : original.call(field);
+        return field instanceof me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition<?>
+                ? condition(field, original) : ((me.fzzyhmstrs.fzzy_config.validation.ValidatedField<?>) field).get();
     }
 
     public static boolean enabled() {
         return enabled;
     }
 
+    /** Uncached lookups call List.contains directly; going through Operation.call(Object...) allocated an array per call. */
     public static boolean contains(List<?> list, Object element, Operation<Boolean> original) {
         if (!enabled || list.size() < MIN_SET_SIZE || !RenderSystem.isOnRenderThread()) {
-            return original.call(list, element);
+            return list.contains(element);
         }
         if (setEpoch != epoch) {
             SETS.clear();

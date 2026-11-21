@@ -5,6 +5,7 @@ import net.neoforged.fml.loading.moddiscovery.ModInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Modules whose target mod is installed, but at a version the module was not written for. Those modules switched
@@ -23,12 +24,26 @@ public final class VersionCheck {
 
     private static List<Changed> changed;
 
+    /**
+     * Newer versions a module will not be ported to, with the reason. Those modules stay off quietly (no toast,
+     * no warning): the fix still applies to the old versions listed in Module.
+     */
+    private static final Map<Module, String> NOT_PORTED = Map.of(
+            Module.STREAMS_REFLOWING, "Fixed upstream: Streams Reflowing 2.17 writes stall dumps only when asked (-Dstreamsreflowing.stalldump), so this fix is retired",
+            Module.SR_SPAWN_WARM, "Retired: Streams Reflowing 2.16 removed the prefetcher this warmed, and 2.17 prepares streams much faster itself");
+
+    private static String notPorted(Module module) {
+        String found = module.targetModId == null ? null : Module.modVersion(module.targetModId);
+        return found != null && !module.targetVersions.contains(found) ? NOT_PORTED.get(module) : null;
+    }
+
     /** Read once at launch, like {@link Module#active()}. Modules switched off in patchwork.toml are not reported. */
     public static List<Changed> changed() {
         if (changed == null) {
             List<Changed> out = new ArrayList<>();
             for (Module module : Module.values()) {
-                if (module.targetModId == null || module.targetVersions.isEmpty() || !module.enabled()) {
+                if (module.targetModId == null || module.targetVersions.isEmpty() || !module.enabled()
+                        || notPorted(module) != null) {
                     continue;
                 }
                 String found = Module.modVersion(module.targetModId);
@@ -54,6 +69,10 @@ public final class VersionCheck {
         }
         if (module == Module.NESTED_JARS && Module.optimalActive("nestedjars")) {
             return "off (Optimal does this fix)";
+        }
+        String notPorted = notPorted(module);
+        if (notPorted != null) {
+            return "off (" + notPorted + ")";
         }
         for (Changed c : changed()) {
             if (c.module() == module) {

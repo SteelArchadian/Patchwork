@@ -23,4 +23,12 @@ public class ARCoreFeatureMixin {
             cir.setReturnValue(false);
         }
     }
+
+    /** AR's LevelRenderer.close hooks free shared state only when this says loaded; a secondary renderer closing must not. */
+    @Inject(method = "isLoaded", at = @At("RETURN"), cancellable = true)
+    private static void patchwork$keepOnSecondaryClose(CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValueZ() && dev.chill.patchwork.acceleratedrendering.SecondaryCloseGuard.skipping()) {
+            cir.setReturnValue(false);
+        }
+    }
 }

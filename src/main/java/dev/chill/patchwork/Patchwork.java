@@ -26,10 +26,18 @@ public class Patchwork {
             LOG.warn("[Patchwork] An old PatchBox jar is also installed; Patchwork stays off. Remove patchbox-*.jar from mods.");
         }
         MobLeakFix.register();
+        if (Module.C2ME_OCL_FALLBACK.active()) {
+            dev.chill.patchwork.c2meoclfallback.OclFallback.verify(Patchwork.class.getClassLoader());
+        }
         if (Module.NESTED_JARS.active()) {
             // Discovery is over by now; a second pass after loading catches anything opened later.
             NestedJarOffload.startPass("construct");
             modBus.addListener(FMLLoadCompleteEvent.class, e -> NestedJarOffload.startPass("load complete"));
+        } else if (Module.optimalActive("nestedjars")) {
+            NestedJarOffload.clearCache();
+        }
+        if (Module.STORMIES_SPIDERS.active() && dev.chill.patchwork.stormiespiders.SpiderVerify.ON) {
+            dev.chill.patchwork.stormiespiders.SpiderVerify.register();
         }
         if (Module.CAMPFIRE_RESTING.active()) {
             // Checked here: CampfireSync names Campfire Resting types, so it must not even load without the mod.

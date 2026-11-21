@@ -1,68 +1,56 @@
-<p align="center"><img src=".github/assets/banner.png" alt="Patchwork" width="100%"></p>
+# Patchwork
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Minecraft-1.21.1-62B47A?style=flat-square" alt="Minecraft 1.21.1">
-  <img src="https://img.shields.io/badge/Loader-NeoForge-F0323F?style=flat-square" alt="NeoForge">
-  <img src="https://img.shields.io/badge/Side-Client%20%26%20server-4C8BF5?style=flat-square" alt="Side">
-  <img src="https://img.shields.io/badge/License-LGPL--3.0--only-555555?style=flat-square" alt="LGPL-3.0-only">
-</p>
+Fixes for other people's mods, in one small mod for NeoForge 1.21.1. Each fix is a separate module that:
 
-**Patchwork** fixes lag, memory leaks and crashes in other popular mods for Minecraft 1.21.1 with NeoForge, without editing or re-uploading their files.
+- is **on by default** and switches itself on only when its target mod is installed at the exact version it was
+  written for;
+- **switches itself off** if that mod updates, and tells you once ("<Mod> updated, so its fix is off for now. The game
+  works normally.");
+- can be turned off in **Mods → Patchwork → Config** (or `config/patchwork.toml`).
 
-## How it works
+Removing any of the target mods is safe: its module just stays off.
 
-- **One module per mod.** Each fix is its own small module, **on by default**.
-- **Version-locked.** A module only runs when its target mod is installed at the exact version it was written and tested for. If that mod updates, the module switches itself off and tells you once: *"&lt;Mod&gt; updated, so its fix is off for now. The game works normally."*
-- **Nothing required.** None of the target mods are needed. If one isn't installed, its module simply stays off.
-- **Your choice.** Every module can be turned off in **Mods → Patchwork → Config** (or `config/patchwork.toml`).
+## Modules
 
-
-## What it fixes
-
-| Mod | Version | Fix |
+| Target mod | Version | What it fixes |
 |---|---|---|
-| Biolith (in Quark) | 3.0.14 | Biome lookups during world generation without throwaway objects (~163 → ~7 MB/s of garbage) |
+| Biolith (bundled in Quark) | 3.0.14 | Allocation-free biome lookups during world generation (~163 → ~7 MB/s) |
 | TerraBlender | 4.1.0.8 | No throwaway lambda and second lookup per surface block (~166 MB/s less garbage) |
-| Terrain Slabs | 3.1.2 | The slab scan reads each block once (~200 MB/s less garbage) |
+| Terrain Slabs | 3.1.2 | Slab scan reads each block once (~200 MB/s less garbage) |
 | Voiceless Survival | 2.0.1 | Memory leak that kept every mob in memory for the whole session |
 | Essential | any | Skips the cosmetics render layer (~61 MB/s render-thread garbage) |
-| Eating Animation | replaces it | A Java port (MIT), so Groovy ModLoader isn't needed (~107 MB less RAM) |
-| Subtle Effects | 1.15.0 | Per-tick biome checks done once instead of up to five times |
-| Accelerated Rendering | 1.0.14-alpha | See-through heads with shader packs |
-| What Are They Up To | 1.21.0-1.2.7 | Sharper live GUI previews, smaller network frames, crash-safe decoding (every player needs Patchwork) |
-| Supplementaries | 1.21.1-3.9.9 | Wrench crash on blocks without an item (with Quark) |
-| Campfire Resting | 1.6.0 | Flood of network errors from players the client can't see |
-| Nomadic Tents | 21.1.0 | A mallet on a tent door packs it up instead of teleporting you in; broken recipe unlocks |
-| Streams Reflowing | 2.14.4 | Stops chunk-stall thread dumps piling up |
-| MidnightLib | 1.9.3 | Random startup crash when two mods load their settings at once |
-| Iris | 1.8.14-beta.1 | Shader images start empty instead of with leftover video memory; name tags don't cast floating shadows; rewritten shaders are cached on disk, so the first shader load is faster |
-| Load My Chunks | 1.2.5.1 | Endless loop while ticking entities (world freeze, hang on exit) |
-| NeoForge jar-in-jar | 21.1.252 | Jars bundled inside mods are read from a disk cache instead of held in memory (~65-117 MB) |
-| Villager API | 1.26.9.6 | Finds its villager packs once per world start (~1 s faster world loading) |
-| 3D Skin Layers | 1.11.3 | With shaders, the 3D skin layer is drawn flat in the shadow pass (~10% more FPS) |
-| Minecraft: sound engine | 1.21.1 | A crashed or stuck sound thread is restarted instead of freezing the game |
-| Minecraft: signs | 1.21.1 | Sign text too far away to read (24 blocks, adjustable) isn't drawn (+30% FPS among many signs) |
-| Minecraft: render types | 1.21.1 | Render type names built once (~7.5% more FPS near banners with shaders) |
-| Seamless Loading Screen | 2.2.1+1.21 | No crash when leaving a world another mod opened |
+| Essential | any | No update popups on the menus (a required update still shows; manual update still works) |
+| Eating Animation | replaces it | Java port (MIT), so Groovy ModLoader isn't needed (~107 MB RAM) |
+| Subtle Effects | 1.15.0 | Per-tick biome/condition work done once instead of up to five times |
+| Accelerated Rendering | 1.0.14-1.21.1-alpha | See-through heads with shader packs |
+| What Are They Up To | 1.21.0-1.2.7 | Live, sharper GUI preview; delta frames; crash-safe decoding (every player needs Patchwork) |
+| Supplementaries | 1.21.1-3.9.9 | Wrench crash on itemless blocks with Quark |
+| Campfire Resting | 1.6.0 | Network error flood from syncing players the client can't see |
+| Nomadic Tents | 21.1.0 | Mallet on a tent door teleports you in instead of packing up |
+| Streams Reflowing | 2.14.4 | Turns on the mod's own switch to stop chunk-stall thread dumps |
+| MidnightLib | 1.9.3 | Random startup crash when two mods using it load their settings at once |
+| Iris | 1.8.14-beta.1+mc1.21.1 | Shader images the pack never clears start empty instead of with leftover video memory (Bliss glow) |
+| Load My Chunks | 1.2.5.1 | Endless loop while ticking entities (world freeze, game hangs on exit) |
+| NeoForge (jar-in-jar) | 21.1.252 | Jars bundled inside mods are read from a disk cache instead of being held whole in memory (~65-117 MB) |
+| Villager API | 1.26.9.6 | Finds its villager packs once per world start instead of rescanning every mod for each step (~1 s faster world loading) |
+| 3D Skin Layers | 1.11.3 | With a shader pack, the 3D outer skin layer is drawn flat in the shadow pass (~10% more FPS; shadows keep their outline) |
+| Iris | 1.8.14-beta.1 | With a shader pack, name tags no longer cast a floating shadow; the first shader load after launch is faster (rewritten shaders are cached on disk) |
+| Minecraft (sound engine) | 1.21.1 | If the sound thread crashes or stops answering, sounds are skipped and the thread restarted instead of the game freezing |
+| Minecraft (signs) | 1.21.1 | Sign text too far away to read (24 blocks, adjustable) isn't drawn; big FPS gain around many signs |
+| Minecraft (render types) | 1.21.1 | Render type names are built once (with shaders, banners asked for them every frame); ~7.5% more FPS near banners |
+| Seamless Loading Screen | 2.2.1+1.21 | No crash when leaving a world that was opened by another mod (auto-start, automation) |
 
-The performance modules don't change results. Each has a check mode (`-Dpatchbox.verify.<key>=true`) that runs the original code side by side and logs any difference. All were checked with zero differences.
-
-## Feedback, bugs and feature ideas welcome
-
-This mod is actively developed, and your input shapes what comes next. Found a bug, have an idea for a feature, or think something could work better? **Please share it** in **[Issues](https://github.com/SteelArchadian/Patchwork/issues)**. Every report and suggestion gets read, and feature requests are genuinely encouraged: good ideas get built.
+The performance modules don't change results. Each has a verify mode (`-Dpatchbox.verify.<key>=true`) that runs the
+original code side by side and logs any difference, and all were checked on a ~290-mod pack with 0 differences.
 
 ## Building
 
-Put the compile-only jars listed in `libs/README.txt` into `libs/` (they're the mods' normal releases and aren't included here), then:
+1. Put the compile-only jars listed in `build.gradle` (`dependencies { compileOnly files('libs/...') }`) into `libs/`.
+   They're the mods' normal releases from CurseForge/Modrinth and aren't included in this repository.
+2. `./gradlew build` → `build/libs/patchbox-1.21.1-1.0.0.jar`.
 
-```
-./gradlew build
-```
+Each module lives in `src/main/java/dev/chill/patchbox/mixin/<key>/` (plus helpers in `dev.chill.patchbox.<key>`) and is registered in `Module.java`.
 
-The jar is written to `build/libs/`. Each module lives in `src/main/java/dev/chill/patchwork/mixin/<key>/` and is registered in `Module.java`.
+## License
 
-## Credits and license
-
-Third-party parts keep their own notices, listed in [NOTICE.md](NOTICE.md): small LGPL-derived pieces of Biolith and TerraBlender, and MIT-licensed parts of Terrain Slabs and Eating Animation. Patchwork doesn't include or redistribute any of the mods it patches.
-
-Licensed under the GNU Lesser General Public License v3.0 only: see [LICENSE](LICENSE) (with the GPL text it builds on in [COPYING](COPYING)). Made with AI assistance.
+Copyright (c) 2026 Chill. Licensed under the GNU LGPL v3.0 only (`LICENSE`, with the GPL text in `COPYING`). Third-party parts and their notices: `NOTICE.md`.

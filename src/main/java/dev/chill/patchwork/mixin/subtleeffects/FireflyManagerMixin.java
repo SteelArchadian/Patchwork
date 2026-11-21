@@ -30,6 +30,9 @@ public class FireflyManagerMixin {
      */
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private static void patchwork$skipSolid(Level level, BlockPos pos, BlockState state, RandomSource random, CallbackInfo ci) {
+        if (SubtleCache.UPSTREAM_FIREFLY_SKIP) {
+            return;   // Subtle Effects 1.15.2+ does this check itself
+        }
         boolean skip = SubtleCache.enabled() && (state.isCollisionShapeFullBlock(level, pos) || !level.getFluidState(pos).isEmpty());
         if (SubtleCache.VERIFY) {
             patchwork$wouldSkip = skip;   // run the original anyway; anything it spawns for a skipped block is a mismatch
